@@ -24,6 +24,8 @@ class Solution {
                 }
             }
             
+            //answer[i]=temp;
+            
             for(int j=0; j<temp.length; j++){
                 answer[i][j] = temp[j];
             }
