@@ -6,10 +6,8 @@ class Solution {
             answer += my_string.charAt(i);        
         }
         
-        for(int i=0; i<overwrite_string.length(); i++){
-            answer += overwrite_string.charAt(i);
-        }
-        
+        answer += overwrite_string;
+       
         int idx = answer.length();
         int diff = my_string.length()-answer.length();
         
