@@ -6,7 +6,9 @@ class Solution {
         int temp=0;
         
         for(int i=-1000; i<=1000; i++){
+            
             temp=0;
+            
             for(int j=0; j<num; j++){
                 temp += i+j;
             }    
