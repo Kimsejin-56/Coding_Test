@@ -2,33 +2,33 @@ import java.util.*;
 
 class Solution {
     public int[] solution(int l, int r) {
-        int[] answer = {};
+        
         int result = 0;
-        String binary="";
+        String tmp="";
+        List<String> list = new ArrayList<>();
+        List<String> temp = new ArrayList<>();
         
         for(int i=l; i<=r; i++){
-            try{
-                
-                if(i % 5 !=0) continue;
-                
-                result = i/5;
-                binary = String.valueOf(result);
-                Integer.parseInt(binary, 2);
-                
-                answer = Arrays.copyOf(answer, answer.length+1);
-                result = Integer.parseInt(binary);
-                answer[answer.length-1] = result*5;
-            }catch(Exception e){
-                continue;
-            }
+            if(i%5 == 0) list.add(String.valueOf(i));
+            
+            
         }
         
-        if(answer.length == 0){
-            int [] arr=new int[1];
-            arr[0] = -1;
-            return arr;
+        
+        for(int i=0; i<list.size(); i++){
+            tmp=list.get(i).replace("5","").replace("0","");
+            if(tmp.equals("")) temp.add(list.get(i));
         }
         
+        int[] answer = new int[temp.size()];
+        for(int i=0; i<temp.size(); i++){
+            answer[i] = Integer.parseInt(temp.get(i));
+        }
+        
+        if(temp.size()==0) {
+            answer=Arrays.copyOf(answer, answer.length+1);
+            answer[0]=-1;
+        }
         return answer;
     }
 }
