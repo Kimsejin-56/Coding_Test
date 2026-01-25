@@ -33,11 +33,9 @@ class Solution {
             }
         }
         
-        System.out.println(Arrays.deepToString(arr));
-        
-        start=arr[1][0];
-        end=arr[1][1];
-        for(int i=arr[0][0]; i<arr[0][1]; i++){
+        start=arr[0][0];
+        end=arr[0][1];
+        for(int i=arr[1][0]; i<arr[1][1]; i++){
             if(start<=i && i<=end){
                 if(i+1 <= end){
                     int tmp=i+1;
@@ -46,7 +44,6 @@ class Solution {
             }
         }
         
-        System.out.println(set);
         answer=set.size();
         return answer;
     }
