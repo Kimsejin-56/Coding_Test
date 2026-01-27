@@ -23,14 +23,11 @@ class Solution {
         for(int i=1; i<=len; i++){
             for(int j=1; j<=len; j++){
                 if(board[i-1][j-1] == 1){
-                    arr[i+1][j] = -1;
-                    arr[i-1][j] = -1;
-                    arr[i][j+1] = -1;
-                    arr[i][j-1] = -1;
-                    arr[i+1][j+1] = -1;
-                    arr[i+1][j-1] = -1;
-                    arr[i-1][j+1] = -1;
-                    arr[i-1][j-1] = -1;
+                    for(int k=i-1; k<=i+1; k++){
+                        for(int l=j-1; l<=j+1; l++){
+                            arr[k][l]=-1;
+                        }
+                    }
                 }
             }
         }
@@ -40,6 +37,8 @@ class Solution {
                 if(arr[i][j] == 0) answer++; 
             }
         }
+        
+        System.out.println(Arrays.deepToString(arr));
         
         return answer;
     }
