@@ -2,7 +2,7 @@ import java.util.*;
 
 public class Main {
     static String[] str, pm;
-    static Set<String> answer=new HashSet<>();
+    static List<String> answer=new ArrayList<>();
     static int l, c;
 
     static void dfs(int L, int s) {
@@ -42,9 +42,8 @@ public class Main {
         pm = new String[l];
         dfs(0, 0);
 
-        ArrayList<String> list=new ArrayList<>(answer);
-        Collections.sort(list);
-        for (String s : list) {
+        Collections.sort(answer);
+        for (String s : answer) {
             System.out.println(s);
         }
     }
