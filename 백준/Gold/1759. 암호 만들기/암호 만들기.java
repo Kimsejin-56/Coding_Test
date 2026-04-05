@@ -4,7 +4,6 @@ public class Main {
     static String[] str, pm;
     static Set<String> answer=new HashSet<>();
     static int l, c;
-    static int[][] dy=new int[1000][1000];
 
     static void dfs(int L, int s) {
         if(L==l){
