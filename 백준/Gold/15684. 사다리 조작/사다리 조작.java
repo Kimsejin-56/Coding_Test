@@ -5,16 +5,12 @@ import java.util.Scanner;
 public class Main {
     static boolean[][] arr;
     static int N, H, M;
-    static int answer = 4;
 
-    static void dfs(int s, int count) {
-        if(count>=answer) return;
-        if(isAvailable()){
-            answer = count;
-            return;
+    static boolean dfs(int s, int count, int target) {
+        if(count==target){
+            if(isAvailable()) return true;
+            return false;
         }
-        if(count==3) return;
-
         for (int i = s; i <= H * (N - 1); i++) {
             int h = (i - 1) % H + 1;
             int row = (i - 1) / H + 1;
@@ -22,9 +18,11 @@ public class Main {
             if(!check(h,row)) continue;
 
             arr[h][row] = true;
-            dfs(i + 1, count + 1);
+            if(dfs(i + 1, count + 1, target)) return true;
             arr[h][row] = false;
         }
+
+        return false;
     }
 
 
@@ -63,9 +61,13 @@ public class Main {
             arr[sc.nextInt()][sc.nextInt()] = true;
         }
 
-        dfs(1, 0);
+        for (int i = 0; i <= 3; i++) {
+            if (dfs(1, 0, i)) {
+                System.out.println(i);
+                return;
+            }
+        }
 
-       if(answer==4) answer = -1;
-       System.out.println(answer);
+       System.out.println(-1);
     }
 }
