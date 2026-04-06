@@ -25,13 +25,13 @@ public class Main {
             }
             answer = Math.min(answer, Math.abs(start - link));
             return;
-        } else{
-            for (int i = s; i <= n; i++) {
-                pm[L] = i;
-                players[i] = true;
-                dfs(L + 1, i + 1);
-                players[i] = false;
-            }
+        }
+
+        for (int i = s; i <= n; i++) {
+            pm[L] = i;
+            players[i] = true;
+            dfs(L + 1, i + 1);
+            players[i] = false;
         }
     }
 
