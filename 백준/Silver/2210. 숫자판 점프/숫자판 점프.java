@@ -1,3 +1,5 @@
+
+
 import java.util.*;
 
 class Point{
@@ -25,9 +27,7 @@ public class Main {
             int nx = p.x + dx[i];
             int ny = p.y + dy[i];
             if (nx >= 0 && ny >= 0 && nx < n && ny < n) {
-                String tmp = str;
-                tmp += arr[nx][ny];
-                dfs(new Point(nx, ny), tmp);
+                dfs(new Point(nx, ny), str + arr[nx][ny]);
             }
         }
     }
