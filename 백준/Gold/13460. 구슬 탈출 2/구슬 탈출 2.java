@@ -1,5 +1,3 @@
-
-
 import java.util.*;
 
 class Point {
@@ -27,7 +25,7 @@ class State {
 public class Main {
     static int n, m, answer, rdis, bdis;
     static char[][] board;
-    static Point R, B, O;
+    static Point R, B;
     static int[] dx = {-1, 0, 1, 0};
     static int[] dy = {0, -1, 0, 1};
     static boolean[][][][] visited;
@@ -125,9 +123,7 @@ public class Main {
                 } else if (board[i][j] == 'B') {
                     B = new Point(i, j);
                     board[i][j] = '.';
-                } else if (board[i][j] == 'O') {
-                    O = new Point(i, j);
-                }
+                } 
             }
         }
         visited=new boolean[n][m][n][m];
