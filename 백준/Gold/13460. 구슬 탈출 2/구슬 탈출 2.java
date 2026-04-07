@@ -22,6 +22,18 @@ class State {
     }
 }
 
+class MoveResult{
+    int x,y,dist;
+    boolean hole;
+
+    public MoveResult(int x, int y, int dist, boolean hole) {
+        this.x = x;
+        this.y = y;
+        this.dist=dist;
+        this.hole = hole;
+    }
+}
+
 public class Main {
     static int n, m, answer, rdis, bdis;
     static char[][] board;
@@ -30,7 +42,7 @@ public class Main {
     static int[] dy = {0, -1, 0, 1};
     static boolean[][][][] visited;
 
-    static void bfs(State state) {
+    static int bfs(State state) {
         Queue<State> q = new LinkedList<>();
         q.offer(state);
         visited[state.rx][state.ry][state.bx][state.by] = true;
@@ -43,64 +55,47 @@ public class Main {
             }
 
             for (int i = 0; i < 4; i++) {
-                rdis = 0;
-                bdis = 0;
+                MoveResult rm = move(s.rx, s.ry, i);
+                MoveResult bm = move(s.bx, s.by, i);
 
-                int rnx = s.rx + dx[i];
-                int rny = s.ry + dy[i];
-                int bnx = s.bx + dx[i];
-                int bny = s.by + dy[i];
-
-                State tmp = new State(s.rx, s.ry, s.bx, s.by, s.cnt + 1);
-
-                if (rnx >= 0 && rny >= 0 && rnx < n && rny < m && board[rnx][rny] != '#') {
-                    rdis++;
-                    while (board[rnx][rny] == '.' && (board[rnx + dx[i]][rny + dy[i]] == '.' || board[rnx + dx[i]][rny + dy[i]] == 'O')) {
-                        rnx += dx[i];
-                        rny += dy[i];
-                        rdis++;
-                    }
-                    tmp.rx = rnx;
-                    tmp.ry = rny;
-                }
-
-                if (bnx >= 0 && bny >= 0 && bnx < n && bny < m && board[bnx][bny] != '#') {
-                    bdis++;
-                    while (board[bnx][bny] == '.' && (board[bnx + dx[i]][bny + dy[i]] == '.' || board[bnx + dx[i]][bny + dy[i]] == 'O')) {
-                        bnx += dx[i];
-                        bny += dy[i];
-                        bdis++;
-                    }
-                    tmp.bx = bnx;
-                    tmp.by = bny;
-                }
-
-                if (board[tmp.bx][tmp.by] == 'O') {
-                    continue;
-                }
-
-                if (board[tmp.rx][tmp.ry] == 'O') {
-                    answer = tmp.cnt;
-                    return;
-                }
-
-                if (tmp.rx == tmp.bx && tmp.ry == tmp.by) {
-                    if (rdis > bdis) {
-                        tmp.rx -= dx[i];
-                        tmp.ry -= dy[i];
-                    } else {
-                        tmp.bx -= dx[i];
-                        tmp.by -= dy[i];
+                if(bm.hole) continue;
+                if(rm.hole) return s.cnt+1;
+                if(rm.x==bm.x && rm.y==bm.y){
+                    if(rm.dist>bm.dist){
+                        rm.x -= dx[i];
+                        rm.y -= dy[i];
+                    }else{
+                        bm.x -= dx[i];
+                        bm.y -= dy[i];
                     }
                 }
-                if (!visited[tmp.rx][tmp.ry][tmp.bx][tmp.by]) {
-                    q.offer(tmp);
-                    visited[tmp.rx][tmp.ry][tmp.bx][tmp.by]=true;
+
+                if(!visited[rm.x][rm.y][bm.x][bm.y]){
+                    visited[rm.x][rm.y][bm.x][bm.y]=true;
+                    q.offer(new State(rm.x, rm.y, bm.x, bm.y, s.cnt + 1));
                 }
             }
         }
+        return -1;
+    }
 
-        answer=-1;
+    static MoveResult move(int x, int y, int dir) {
+        int dist=0;
+        while (true) {
+            int nx = x + dx[dir];
+            int ny = y + dy[dir];
+
+            if(board[nx][ny]=='#') break;
+
+            x = nx;
+            y = ny;
+            dist++;
+
+            if(board[nx][ny]=='O') return new MoveResult(nx, ny, dist, true);
+
+        }
+
+        return new MoveResult(x, y, dist, false);
     }
 
     public static void main(String[] args) {
@@ -123,13 +118,12 @@ public class Main {
                 } else if (board[i][j] == 'B') {
                     B = new Point(i, j);
                     board[i][j] = '.';
-                } 
+                }
             }
         }
         visited=new boolean[n][m][n][m];
         State state = new State(R.x, R.y, B.x, B.y, 0);
-        bfs(state);
+        System.out.println(bfs(state));
 
-        System.out.println(answer);
     }
 }
