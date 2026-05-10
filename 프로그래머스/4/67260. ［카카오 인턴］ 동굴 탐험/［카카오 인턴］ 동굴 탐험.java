@@ -1,55 +1,75 @@
 import java.util.*;
 
+//위상정렬 방식
 class Solution {
-    static List<List<Integer>> tree;   
-    static int[] before, wait;
-    
     public boolean solution(int n, int[][] path, int[][] order) {
-        tree=new ArrayList<>();
-        before=new int[n];
-        wait=new int[n];
-        Arrays.fill(before, -1);
-        Arrays.fill(wait, -1);
+        List<Integer>[] tree = new ArrayList[n];
+
+        for (int i = 0; i < n; i++) {
+            tree[i] = new ArrayList<>();
+        }
+        
+        for(int[] p : path){
+            int a = p[0];
+            int b = p[1];
+            tree[a].add(b);
+            tree[b].add(a);
+        }
+        
+        List<Integer>[] graph = new ArrayList[n];
+        int[] indegree=new int[n];
+        for (int i = 0; i < n; i++) {
+            graph[i] = new ArrayList<>();
+        }
+        
+        makeGraph(tree, graph, indegree, 0, n);
         
         for(int[] o : order){
-            before[o[1]]=o[0];
+            int a = o[0];
+            int b = o[1];
+            graph[a].add(b);
+            indegree[b]++;
         }
-        if(before[0] != -1) return false;
         
+        Queue<Integer> q = new ArrayDeque<>();
         for(int i=0; i<n; i++){
-            tree.add(new ArrayList<>());
+            if(indegree[i]==0) q.offer(i);
         }
         
-        for(int i=0; i<path.length; i++){
-            tree.get(path[i][0]).add(path[i][1]);
-            tree.get(path[i][1]).add(path[i][0]);
-        }
-        
-        boolean[] visited=new boolean[n];
-        bfs(0, visited);
         int cnt=0;
-        for(boolean flag : visited) if(flag) cnt++;
-        if(cnt==n) return true;
-        return false;
+        while(!q.isEmpty()){
+            int cur = q.poll();
+            cnt++;
+            
+            for(int next : graph[cur]){
+                indegree[next]--;
+                if(indegree[next]==0){
+                    q.offer(next);
+                }
+            }
+        }
+        
+        return cnt==n;
     }
     
-    public void bfs(int node, boolean[] visited){
+    
+    public void makeGraph( List<Integer>[] tree,
+                      List<Integer>[] graph,
+                      int[] indegree,
+                      int start, int n){
+        boolean[] visited=new boolean[n];
+        visited[start]=true;
         Queue<Integer> q=new ArrayDeque<>();
-        q.offer(node);
+        q.offer(start);
         
         while(!q.isEmpty()){
-            int nd=q.poll();
-                
-            if(before[nd] != -1 && !visited[before[nd]]){
-                wait[before[nd]]=nd;
-                continue;                        
-            }
-                
-            
-            if(!visited[nd]){
-                if(wait[nd] != -1) q.offer(wait[nd]);
-                visited[nd]=true;
-                for(int tmp : tree.get(nd)) q.offer(tmp);
+            int cur=q.poll();
+            for(int next : tree[cur]){
+                if(visited[next]) continue;
+                graph[cur].add(next);
+                visited[next]=true;
+                q.offer(next);
+                indegree[next]++;
             }
         }
     }
