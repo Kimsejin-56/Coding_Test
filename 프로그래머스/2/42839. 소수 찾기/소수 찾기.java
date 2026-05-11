@@ -4,6 +4,7 @@ class Solution {
     static boolean[] visited;
     static Set<Integer> set;
     public int solution(String numbers) {
+        int answer=0;
         set=new HashSet<>();
         visited=new boolean[numbers.length()];
         int[] number=new int[numbers.length()];
@@ -12,23 +13,26 @@ class Solution {
         }
         
         dfs(number, 0, "");
-        return set.size();
+        for(int num : set){
+            if(num==1 || num==0) continue;
+            boolean pass=false;
+            for(int i=2; i<=Math.sqrt(num); i++){
+                if(num%i==0){
+                    pass=true;
+                    break;
+                }
+            }
+            
+            if(!pass) answer++;
+            
+        }
+        return answer;
     }
     
     public void dfs(int[] number, int depth, String str){
         if(depth!=0 && depth<=number.length){
             int n=Integer.parseInt(str);
-            boolean pass=false;
-            for(int i=2; i<=Math.sqrt(n); i++){
-                if(n%i==0){
-                    pass=true;
-                    break;
-                }
-            }
-            if(!pass) {
-                if(n!=0 && n!=1) set.add(n);
-            }
-            if(depth==number.length) return;
+            set.add(n);
         }
             
         for(int i=0; i<number.length; i++){

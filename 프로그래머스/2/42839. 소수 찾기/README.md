@@ -1,10 +1,10 @@
 # [level 2] 소수 찾기 - 42839 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/42839) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/42839?gad_source=1&gad_campaignid=22681436564&gbraid=0AAAAAC_c4nCp7pMqAQANCaQpOlU-61wFg&gclid=Cj0KCQjw_IXQBhCkARIsADqELbIKX7zqZZ_8CztZdQlzmfzazin7JYA0NoeVzatjtoF3sgrnuIkNtBMaAmfkEALw_wcB) 
 
 ### 성능 요약
 
-메모리: 80.6 MB, 시간: 13.42 ms
+메모리: 68.1 MB, 시간: 18.07 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2026년 05월 11일 14:59:43
+2026년 05월 11일 19:01:43
 
 ### 문제 설명
 
