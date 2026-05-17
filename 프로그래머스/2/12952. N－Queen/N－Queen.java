@@ -1,13 +1,13 @@
 import java.util.*;
 
 class Solution {
+    static int[][] board;
     static int answer;
-    static boolean[] col, dia1, dia2;
+    static boolean[] visited;
     public int solution(int n) {
         answer = 0;
-        col=new boolean[n];
-        dia1=new boolean[2*n-1];
-        dia2=new boolean[2*n-1];
+        board=new int[n][n];
+        visited=new boolean[n];
         
         dfs(0, n);
         return answer;
@@ -19,24 +19,30 @@ class Solution {
             return;
         } else {
             for(int i=0; i<n; i++){
-                int d1=depth+i;
-                int d2=depth-i+n-1;
+                if(visited[i]) continue;
                 
-                if(col[i]) continue;
-                if(dia1[d1]) continue;
-                if(dia2[d2]) continue;
-  
+                boolean pass=false;
+                int cnt=1;
+                for(int j=depth-1; j>=0; j--){
+                    if(i+cnt<n && board[j][i+cnt]==1){
+                        pass=true;
+                        break;
+                    }
+                    
+                    if(i-cnt>=0 && board[j][i-cnt]==1){
+                        pass=true;
+                        break;
+                    }
+                    cnt++;
+                }
                 
+                if(pass) continue;
                 
-                col[i]=true;
-                dia1[d1]=true;
-                dia2[d2]=true;
-                
+                board[depth][i]=1;
+                visited[i]=true;
                 dfs(depth+1, n);
-                
-                col[i]=false;
-                dia1[d1]=false;
-                dia2[d2]=false;
+                visited[i]=false;
+                board[depth][i]=0;
             }
         }
     }
