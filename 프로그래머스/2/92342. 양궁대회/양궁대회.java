@@ -8,7 +8,7 @@ class Solution {
         answer=0;
         list=new ArrayList<>();
         arr=new int[11];
-        dfs(0, n, info);
+        dfs(0, 0, n, info);
         
         if(list.size()==0){
             int[] tmp=new int[1];
@@ -34,9 +34,8 @@ class Solution {
         return list.get(0);
     }
     
-    public void dfs(int idx, int remain, int[] info){
-        if(idx==10) {
-            arr[idx]=remain;
+    public void dfs(int depth, int start, int n, int[] info){
+        if(depth==n) {
             me=0;
             you=0;
             for(int i=0; i<=10; i++){
@@ -55,9 +54,10 @@ class Solution {
             
             return;
         } 
-        for(int i=0; i<=remain; i++){
-            arr[idx]=i;
-            dfs(idx+1, remain-i, info);
+        for(int i=start; i<=10; i++){
+            arr[i]++;
+            dfs(depth+1, i, n, info);
+            arr[i]--;
         }
     }
 }
