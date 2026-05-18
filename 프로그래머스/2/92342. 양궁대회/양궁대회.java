@@ -45,7 +45,7 @@ class Solution {
             }
             int diff=me-you;
             
-            if(diff==0) return;
+            if(diff<=0) return;
             if(answer < diff){
                 answer=diff;
                 list.clear();
