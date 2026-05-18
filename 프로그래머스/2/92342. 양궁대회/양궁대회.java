@@ -35,7 +35,8 @@ class Solution {
     }
     
     public void dfs(int idx, int remain, int[] info){
-        if(idx==11) {
+        if(idx==10) {
+            arr[idx]=remain;
             me=0;
             you=0;
             for(int i=0; i<=10; i++){
