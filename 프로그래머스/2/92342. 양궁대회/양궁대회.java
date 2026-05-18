@@ -5,7 +5,7 @@ class Solution {
     static List<int[]> list;
     static int me, you, answer;
     public int[] solution(int n, int[] info) {
-        answer=1;
+        answer=0;
         list=new ArrayList<>();
         arr=new int[11];
         dfs(0, n, info);
@@ -45,11 +45,13 @@ class Solution {
             }
             int diff=me-you;
             
+            if(diff==0) return;
             if(answer < diff){
                 answer=diff;
                 list.clear();
                 list.add(Arrays.copyOf(arr, arr.length));
             } else if(answer==diff) list.add(Arrays.copyOf(arr, arr.length));
+            
             return;
         } 
         for(int i=0; i<=remain; i++){
