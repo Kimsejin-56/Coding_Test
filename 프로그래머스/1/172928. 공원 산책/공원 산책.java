@@ -1,17 +1,12 @@
 import java.util.*;
 
 class Solution {
-    static Map<String, int[]> dir;
-    static int[] answer;
-    static int[][] board;
-    static int h, w;
-    
     public int[] solution(String[] park, String[] routes) {
-        answer = new int[2];
-        dir=new HashMap<>();
-        h=park.length;
-        w=park[0].length();
-        board=new int[h][w];
+        int[] answer = new int[2];
+        Map<String, int[]> dir=new HashMap<>();
+        int h=park.length;
+        int w=park[0].length();
+        int[][] board=new int[h][w];
         
         dir.put("S", new int[]{1,0});
         dir.put("E", new int[]{0,1});
@@ -48,7 +43,6 @@ class Solution {
             if(pass){
                 answer[0]=nx;
                 answer[1]=ny;
-                System.out.println("ai="+i+" "+Arrays.toString(answer));
             }
         }
         
