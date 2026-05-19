@@ -5,10 +5,7 @@ class Solution {
         List<Integer> answer=new ArrayList<>();
         Map<String, Integer> map=new HashMap<>();
         
-        int ty=Integer.parseInt(today.substring(0, today.indexOf(".")));
-        String rest=today.substring(today.indexOf(".")+1);
-        int tm=Integer.parseInt(rest.substring(0, rest.indexOf(".")));
-        int td=Integer.parseInt(rest.substring(rest.indexOf(".")+1));
+        int td=getDate(today);
         
         for(String s : terms){
             String str=String.valueOf(s.charAt(0));
@@ -18,31 +15,12 @@ class Solution {
         
         for(int i=0; i<privacies.length; i++){
             String str=privacies[i];
-            int y=Integer.parseInt(str.substring(0, str.indexOf(".")));
-            String r=str.substring(str.indexOf(".")+1);
-            int m=Integer.parseInt(r.substring(0, r.indexOf(".")));
-            int d=Integer.parseInt(r.substring(r.indexOf(".")+1, r.indexOf(" ")));
+            String param=str.substring(0, str.indexOf(" "));
+            int cur=getDate(param);
             String alpha=String.valueOf(str.charAt(str.length()-1));
-            
-            int term=map.get(alpha);
-            m+=term;
-            if(m>12){
-                if(m%12==0){
-                    y+=m/12-1;
-                    m=12;
-                } else{
-                    y+=m/12;
-                    m=m%12;
-                }
-            }
-            
-            if(ty>y) answer.add(i+1);
-            else if(ty==y){
-                if(tm>m) answer.add(i+1);
-                else if(tm==m){
-                    if(td>=d) answer.add(i+1);
-                }
-            }
+            cur+=map.get(alpha)*28;
+            if(cur<=td) answer.add(i+1);
+           
         }
         
         int[] result=new int[answer.size()];
@@ -50,5 +28,14 @@ class Solution {
             result[i]=answer.get(i);
         }
         return result;
+    }
+    
+    public int getDate(String str){
+        int y=Integer.parseInt(str.substring(0, str.indexOf(".")));
+        String r=str.substring(str.indexOf(".")+1);
+        int m=Integer.parseInt(r.substring(0, r.indexOf(".")));
+        int d=Integer.parseInt(r.substring(r.indexOf(".")+1));
+        
+        return y*12*28 + m*28 + d;
     }
 }
