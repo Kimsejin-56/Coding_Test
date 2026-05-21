@@ -3,26 +3,19 @@ import java.util.*;
 class Solution {
     public String[] solution(String[] players, String[] callings) {
         int n=players.length;
-        Map<String, Integer> psm=new HashMap<>();
-        Map<Integer, String> pim=new HashMap<>();
-        for(int i=0; i<n; i++){
-            psm.put(players[i], i);
-            pim.put(i, players[i]);
-        } 
+        Map<String, Integer> map=new HashMap<>();
+        String[] answer=Arrays.copyOf(players, n);
+        
+        for(int i=0; i<n; i++) map.put(players[i], i);
         
         for(String cur : callings){
-            int num=psm.get(cur);
-            String before=pim.get(num-1);
+            int num=map.get(cur);
+            map.put(cur, num-1);
+            map.put(answer[num-1], num);
             
-            psm.put(cur, num-1);
-            psm.put(before, num);
-            pim.put(num, before);
-            pim.put(num-1, cur);
-        }
-        
-        String[] answer= new String[n];
-        for(int i=0; i<n; i++){
-            answer[i]=pim.get(i);
+            String tmp=answer[num-1];
+            answer[num-1]=answer[num];
+            answer[num]=tmp;
         }
         
         return answer;
