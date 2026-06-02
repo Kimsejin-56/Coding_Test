@@ -10,8 +10,6 @@ class Solution {
             int time=getTime(arr[0], arr[1]);
             String str=convert(arr[3]);
             
-            System.out.println(str);
-            
             String music="";
             int idx=0;
             for(int j=0; j<time; j++){
