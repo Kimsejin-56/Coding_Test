@@ -4,7 +4,8 @@ class Solution {
     public String solution(String m, String[] musicinfos) {
         String answer = "(None)";
         int max=0;
-        
+        m=convert(m);
+    
         for(int i=0; i<musicinfos.length; i++){
             String[] arr=musicinfos[i].split(",");
             int time=getTime(arr[0], arr[1]);
@@ -17,7 +18,6 @@ class Solution {
                 music+=String.valueOf(str.charAt(idx));
             }
             
-            m=convert(m);
             if(music.contains(m)){
                 if(max < time){
                     max=time;
