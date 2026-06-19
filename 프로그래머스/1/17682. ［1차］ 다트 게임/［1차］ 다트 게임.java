@@ -24,11 +24,9 @@ class Solution {
                 else {
                     arr[idx-2]*=2;
                     arr[idx-1]*=2;
-                    continue;
                 }    
             }else if(pre=='#'){
                 arr[idx-1]= -arr[idx-1];
-                continue;
             }
         }
         
