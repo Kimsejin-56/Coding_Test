@@ -19,18 +19,16 @@ class Solution {
                 else if(pre=='T') n=(int)Math.pow(n,3);
                 
                 arr[idx++]=n;
-            } else{
-                if(pre=='*'){
-                    if(idx==1) arr[idx-1]*=2;
-                    else {
-                        arr[idx-2]*=2;
-                        arr[idx-1]*=2;
-                        continue;
-                    }
-                }else if(pre=='#'){
-                    arr[idx-1]= -arr[idx-1];
+            }else if(pre=='*'){
+                if(idx==1) arr[idx-1]*=2;
+                else {
+                    arr[idx-2]*=2;
+                    arr[idx-1]*=2;
                     continue;
-                }
+                }    
+            }else if(pre=='#'){
+                arr[idx-1]= -arr[idx-1];
+                continue;
             }
         }
         
