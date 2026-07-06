@@ -21,7 +21,7 @@ class Solution {
             int y2=info[3]-1;
             
             int temp=arr[x1][y1];
-            int min=Integer.MAX_VALUE;
+            int min=temp;
             
             for(int i=x1; i<x2; i++){
                 arr[i][y1]=arr[i+1][y1];
@@ -44,7 +44,6 @@ class Solution {
             }
             
             arr[x1][y1+1]=temp;
-            min=Math.min(min, temp);
             answer.add(min);
         }
         
