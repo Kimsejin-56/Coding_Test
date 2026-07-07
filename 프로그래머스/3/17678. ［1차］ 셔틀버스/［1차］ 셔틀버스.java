@@ -11,6 +11,7 @@ class Solution {
         for(int i=0; i<crew.length; i++){
             crew[i]=convertInt(timetable[i]);
         }
+        
         Arrays.sort(crew);
         
         for(int i=0; i<n; i++){
@@ -24,9 +25,7 @@ class Solution {
         }
         
         if(cnt<m) answer=convertString(bus);
-        else if(cnt==m){
-            answer=convertString(crew[idx-1]-1);
-        }
+        else if(cnt==m)answer=convertString(crew[idx-1]-1);
         
         return answer;
     }
