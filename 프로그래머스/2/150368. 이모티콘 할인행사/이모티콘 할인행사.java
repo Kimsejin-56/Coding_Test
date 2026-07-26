@@ -56,8 +56,8 @@ class Solution {
             
             if(temp>=price) plus++;
             else total+=temp;
-            
-            list.add(new Result(plus, total));
         }
+        
+        list.add(new Result(plus, total));
     } 
 }
