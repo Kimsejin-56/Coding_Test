@@ -9,27 +9,25 @@ class Solution {
             list.add(p);
         }
         
-        int idx=list.size()-1;
+        int right=list.size()-1;
+        int left=0;
         Collections.sort(list);
-        int i;
+        System.out.println(list);
         
-        for(i=0; i<list.size(); i++){
-            if(i>=idx) break;
-            
-            int cur=list.get(i);
-            while(cur+list.get(idx)>limit){
+        while(left<=right){
+            int cur=list.get(left);
+            while(cur+list.get(right)>limit){
                 answer++;
-                idx--;
-                if(i>=idx) break;
+                right--;
+                if(left>=right) break;
             }
             
-            if(i<idx && cur+list.get(idx)<=limit){
-                answer++;
-                idx--;
-            }else if(idx==i) answer++;
+            if(left<right && cur+list.get(right)<=limit) answer++;
+            else if(left==right) answer++;
+            
+            left++;
+            right--;
         }
-        
-        if(i==idx) answer++;
         
         return answer;
     }
