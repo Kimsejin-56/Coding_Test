@@ -3,21 +3,21 @@ import java.util.*;
 class Solution {
     public int solution(int n) {
         int answer = 0;
-        int idx=1;
-        int sum=0;
+        int left=1;
+        int right=1;
+        int sum=1;
 
-        for(int i=1; i<=n; i++){
-            while(sum<n){
-                sum+=idx++;
-            }
-
-            if(sum==n) {
+        while(left<=n){
+            if(sum<n){
+                right++;
+                sum+=right;
+            }else if(sum>n){
+                sum-=left;
+                left++;
+            }else{
                 answer++;
-                idx=i+1;
-                sum=0;
-            }
-            else if(sum>n){
-                sum-=i;
+                sum-=left;
+                left++;
             }
         }
 
