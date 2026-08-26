@@ -45,16 +45,6 @@ class Solution {
         }
         
         bfs(board, start);
-        
-        for(int i=0; i<n; i++){
-            for(int j=0; j<m; j++){
-                System.out.print(dis[i][j]+" ");
-            }
-            System.out.println();
-        }
-        System.out.println();
-        System.out.println();
-        
         if(!open) return -1;
         visited=new boolean[n][m];
         bfs(board, lever);
