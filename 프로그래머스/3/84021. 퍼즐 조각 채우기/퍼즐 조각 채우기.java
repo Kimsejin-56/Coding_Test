@@ -114,7 +114,7 @@ class Solution {
     }
     
     public int same(int[][] tk, int[][] tb){
-        boolean pass=false;
+        boolean pass;
         int num=0;
         
         for(int l=0; l<4; l++){
