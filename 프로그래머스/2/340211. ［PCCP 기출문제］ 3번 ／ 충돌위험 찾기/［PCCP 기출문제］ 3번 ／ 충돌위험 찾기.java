@@ -16,7 +16,7 @@ class Solution {
         int answer = 0;
         List<Point> p=new ArrayList<>();
         List<Point> s=new ArrayList<>();
-        Map<String, Integer> cnt=new HashMap<>();
+       
 
         for(int i=0; i<points.length; i++){
             p.add(new Point(points[i][0], points[i][1]));
@@ -33,18 +33,7 @@ class Solution {
            s.add(cur);
         }
 
-        for (int j = 0; j < s.size(); j++) {
-            Point p1 = s.get(j);
-            for (int k = 0; k < s.size(); k++) {
-                if (j == k) continue;
-                Point p2 = s.get(k);
-                if (p1.x == p2.x && p1.y == p2.y) {
-                    cnt.put(p1.x + ":" + p1.y, 0);
-                }
-            }
-        }
-        answer+=cnt.size();
-        cnt.clear();
+        answer+=crash(s);
 
         while(!s.isEmpty()) {
             for (int i = 0; i <s.size(); i++) {
@@ -62,25 +51,13 @@ class Solution {
                 }
             }
 
-            for (int j = 0; j < s.size(); j++) {
-                Point p1 = s.get(j);
-                for (int k = 0; k < s.size(); k++) {
-                    if (j == k) continue;
-                    Point p2 = s.get(k);
-                    if (p1.x == p2.x && p1.y == p2.y) {
-                        cnt.put(p1.x + ":" + p1.y, 0);
-                    }
-                }
-            }
-
-            answer+=cnt.size();
-            cnt.clear();
+            answer+=crash(s);
 
             for(int j=0; j<s.size(); j++){
                 Point ps=s.get(j);
                 if(ps.x==ps.gx && ps.y==ps.gy) {
                     ps.index++;
-                    
+
                     if(ps.index==routes[ps.num].length){
                         s.remove(ps);
                         j--;
@@ -97,5 +74,19 @@ class Solution {
 
     public int getDis(int x1, int y1, int x2, int y2){
         return Math.abs(x2-x1)+Math.abs(y2-y1);
+    }
+
+    public int crash(List<Point> s){
+        Map<String, Integer> map=new HashMap<>();
+        for(Point p : s){
+            String key=p.x+":"+p.y;
+            map.put(key, map.getOrDefault(key, 0)+1);
+        }
+
+        int cnt=0;
+        for(String k : map.keySet()){
+            if(map.get(k)>=2) cnt++;
+        }
+        return cnt;
     }
 }
