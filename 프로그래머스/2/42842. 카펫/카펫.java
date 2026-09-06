@@ -7,14 +7,8 @@ class Solution {
         while(col!=0){
             int rest=brown-col*2;
             row=rest/2+2;
-            int y=0;
-            for(int i=1; i<col-1; i++){
-                for(int j=1; j<row-1; j++){
-                    y++;
-                }
-            }
             
-            if(y==yellow) break;
+            if(((col-2)*(row-2))==yellow) break;
             col--;
         }
         
