@@ -26,7 +26,6 @@ class Solution {
             for(int i=start; i<size; i++){
                 c[depth]=i;
                 dfs(depth+1, size, i+1, c, relation);
-                c[depth]=0;
             }
         }
     }
