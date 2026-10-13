@@ -2,59 +2,55 @@ import java.util.*;
 
 class Solution {
     public int[] solution(int[] fees, String[] records) {
-        Map<String, Integer> time=new HashMap<>();
-        Map<String, Integer> money=new HashMap<>();
-        
+        List<Integer> list = new ArrayList<>();
+        Map<Integer, Integer> map = new HashMap<>();
+        Map<Integer, Integer> answer = new HashMap<>();
+        List<Integer> sort=new ArrayList<>();
+
         for(int i=0; i<records.length; i++){
-            String[] tmp=records[i].split(" ");
-            int m=getTime(tmp[0]);
-            if(tmp[2].equals("IN")){
-                time.put(tmp[1], m);
-            } else{
-                int in=time.get(tmp[1]);
-                int minus=m-in;
-                money.put(tmp[1], money.getOrDefault(tmp[1], 0)+minus);
-                time.remove(tmp[1]);
+            String record=records[i];
+            String[] str=record.split(" ");
+            String[] time=str[0].split(":");
+            int cnum=Integer.parseInt(str[1]);
+            String dir=str[2];
+            int t=Integer.parseInt(time[0])*60+Integer.parseInt(time[1]);
+
+            if(dir.equals("IN")){
+                map.put(cnum, t);
+            }else {
+                int cur=t-map.get(cnum);
+                answer.put(cnum, cur+answer.getOrDefault(cnum, 0));
+                map.remove(cnum);
             }
         }
-        
-        if(!time.isEmpty()){
-            for(String key : time.keySet()){
-                int cur=getTime("23:59");
-                int total=cur-time.get(key);
-                money.put(key, money.getOrDefault(key, 0)+total);
+
+        int t=23*60+59;
+        for(int cnum : map.keySet()){
+            int time=t-map.get(cnum);
+            answer.put(cnum, time+answer.getOrDefault(cnum, 0));
+        }
+
+        for(int cnum : answer.keySet()){
+            sort.add(cnum);
+            int time=answer.get(cnum);
+
+            if(time<=fees[0]){
+                answer.put(cnum, fees[1]);
+            }else{
+                time-=fees[0];
+                int n=time/fees[2];
+                if(time%fees[2]!=0) n++;
+                answer.put(cnum, fees[1]+n*fees[3]);
             }
         }
-        
-        for(String key : money.keySet()){
-            int t=money.get(key);
-            if(t<=fees[0]) {
-                money.put(key, fees[1]);
-                continue;
-            }
-            
-            int m=0;
-            if((t-fees[0])%fees[2]==0){
-                m=(t-fees[0])/fees[2]*fees[3];
-            } else{
-                m=(((t-fees[0])/fees[2])+1)*fees[3];
-            }
-            money.put(key, m+fees[1]);
+
+        Collections.sort(sort);
+
+        int[] arr=new int[sort.size()];
+        for(int i=0; i<sort.size(); i++){
+            arr[i]=answer.get(sort.get(i));
         }
-        
-        TreeMap<String, Integer> map=new TreeMap<>(money);
-        int[] answer=new int[map.size()];
-        int idx=0;
-        for(String key : map.keySet()){
-            answer[idx++]=map.get(key);
-        }
-        
-        return answer;
-    }
-    
-    public int getTime(String str){
-        int h=Integer.parseInt(str.substring(0, str.indexOf(":")));
-        int m=Integer.parseInt(str.substring(str.indexOf(":")+1));
-        return h*60+m;
+
+        return arr;
     }
 }
