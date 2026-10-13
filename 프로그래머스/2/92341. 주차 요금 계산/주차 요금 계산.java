@@ -2,7 +2,6 @@ import java.util.*;
 
 class Solution {
     public int[] solution(int[] fees, String[] records) {
-        List<Integer> list = new ArrayList<>();
         Map<Integer, Integer> map = new HashMap<>();
         Map<Integer, Integer> answer = new HashMap<>();
         List<Integer> sort=new ArrayList<>();
