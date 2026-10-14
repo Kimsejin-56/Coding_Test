@@ -4,7 +4,6 @@ class Task{
     String name;
     int start;
     int playtime;
-    boolean pass;
 
     public Task(String name, int start, int playtime){
         this.name=name;
