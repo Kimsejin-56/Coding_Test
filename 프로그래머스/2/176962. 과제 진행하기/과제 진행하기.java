@@ -19,6 +19,7 @@ class Solution {
         String[] answer = new String[plans.length];
         List<Task> list = new ArrayList<>();
         List<Task> prev = new ArrayList<>();
+        Stack<Task> stack=new Stack<>();
 
         for(int i=0; i<plans.length; i++){
             String[] plan=plans[i];
@@ -38,43 +39,38 @@ class Solution {
             if(i==list.size()-1){
                 t.playtime=0;
             }else{
-                Task nt=list.get(i+1);
-                int play=nt.start-t.start;
-                t.playtime-=play;
-
+               Task nt=list.get(i+1);
+                int pt=nt.start-t.start;
+                t.playtime-=pt;
+                
                 if(t.playtime<0){
                     addAnswer(t, answer);
-                    if(!prev.isEmpty()){
+                    if(!stack.isEmpty()){
                         int rest=t.playtime;
-                        for(int l=prev.size()-1; l>=0; l--){
-                            if(prev.isEmpty()) break;
-                            Task p=prev.get(l);
+                        while(!stack.isEmpty()){
+                            Task p=stack.pop();
                             p.playtime+=rest;
                             rest=p.playtime;
-                            if(p.playtime<=0) {
-                                addAnswer(p, answer);
-                                prev.remove(p);
-                            }
-                            if(rest>=0) break;
+                            if(rest>0) {
+                                stack.push(p);
+                                break;
+                            }else addAnswer(p, answer);
                         }
-                        
                     }
-                    t.playtime=0;
                     continue;
                 }
             }
             
-            if(t.playtime==0) {
+            if(t.playtime<=0){
                 addAnswer(t, answer);
-            }else prev.add(t);
+            }else stack.push(t);
         }
         
-        for(int i=prev.size()-1; i>=0; i--){
-            Task t=prev.get(i);
+        while(!stack.isEmpty()){
+            Task t=stack.pop();
             addAnswer(t, answer);
-            t.playtime=0;
         }
-
+        
         return answer;
     }
         
