@@ -13,7 +13,7 @@ class Solution {
             set.add(sum);
             
             int ip=i;
-            for(int j=0; j<n; j++){
+            for(int j=1; j<n; j++){
                 if(ip==n){
                     ip=0;
                 }
