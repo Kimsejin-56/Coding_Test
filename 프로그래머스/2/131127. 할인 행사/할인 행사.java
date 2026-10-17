@@ -31,8 +31,7 @@ class Solution {
         }
         
         for(int i=0; i<want.length; i++){
-            if(map.get(want[i])==null) return false;
-            int cnt=map.get(want[i]);
+            int cnt=map.getOrDefault(want[i], 0);
             if(number[i]>cnt) return false;
         }
         
