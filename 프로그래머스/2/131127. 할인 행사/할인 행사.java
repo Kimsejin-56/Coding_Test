@@ -3,9 +3,8 @@ import java.util.*;
 class Solution {
     public int solution(String[] want, int[] number, String[] discount) {
         int answer = 0;
-        int idx=0;
-        
         List<String> cur=new ArrayList<>();
+        
         for(int i=0; i<10; i++){
             cur.add(discount[i]);
         }
