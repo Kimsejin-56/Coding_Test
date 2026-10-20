@@ -3,43 +3,31 @@ import java.util.*;
 class Solution {
     public int[] solution(String[] gems) {
         int[] answer = new int[2];
+        Map<String, Integer> kind=new HashMap<>();
+        Map<String, Integer> map=new HashMap<>();
+        int idx=0;
         int len=Integer.MAX_VALUE;
-        int start=0;
-        int end=0;
-        HashMap<String, Integer> map=new HashMap<>();
-
-        for(String s : gems){
-            map.putIfAbsent(s, 0);
-        }
-
-        int cnt=map.size();
-
+        
         for(int i=0; i<gems.length; i++){
-            if(map.get(gems[i]) == 0) cnt--;
-
-            map.put(gems[i], map.get(gems[i])+1);
-
-            if(cnt==0) {
-                end=i+1;
-
-                int j=start;
-                if(start>0)  j=start-1;
-                for(; j<end; j++){
-                    if(map.get(gems[j])-1 == 0){
-                        start= j+1;
-                        break;
-                    }
-                    map.put(gems[j], map.get(gems[j])-1);
-                }
-
-                if(len>end-start){
-                    len=end-start;
-                    answer[0]=start;
-                    answer[1]=end;
-                }
+            kind.putIfAbsent(gems[i], 0);
+        }
+        
+        for(int i=0; i<gems.length; i++){
+            String key=gems[i];
+            map.put(key, map.getOrDefault(key, 0)+1);
+            
+            while(map.get(gems[idx])>1){
+                map.put(gems[idx], map.get(gems[idx])-1);
+                idx++;
+            }
+            
+            if(map.size()==kind.size() && len>i-idx){
+                len=i-idx;
+                answer[0]=idx+1;
+                answer[1]=i+1;
             }
         }
-
+        
         return answer;
     }
 }
