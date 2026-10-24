@@ -10,14 +10,14 @@ class Solution {
             action(diff, sk[0], sk[1], sk[2], sk[3], sk[4], sk[5]);
         }
         
-        for(int i=1; i<diff.length-1; i++){
-            for(int j=1; j<diff[0].length-1; j++){
+        for(int i=1; i<diff.length; i++){
+            for(int j=1; j<diff[0].length; j++){
                 diff[i][j]+=diff[i][j-1];
             }
         }
         
-        for(int i=1; i<diff.length-1; i++){
-            for(int j=1; j<diff[0].length-1; j++){
+        for(int i=1; i<diff.length; i++){
+            for(int j=1; j<diff[0].length; j++){
                 diff[i][j]+=diff[i-1][j];
             }
         }
@@ -27,7 +27,7 @@ class Solution {
                 board[i][j]+=diff[1+i][1+j];
             }
         }
-        
+       
         return getLiving(board);
     }
     
