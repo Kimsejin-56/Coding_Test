@@ -6,7 +6,7 @@ class Solution {
         int max=0;
         Set<Integer> set=new HashSet<>();
         PriorityQueue<Integer> pq=new PriorityQueue<>(
-            (a, b) -> Integer.compare(stones[b], stones[a])
+            (a, b) -> stones[b]-stones[a]
         );
         
         for(int i=0; i<k; i++){
