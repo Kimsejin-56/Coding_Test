@@ -1,8 +1,5 @@
 import java.util.*;
 
-//방식
-//ms 단위로 바꾸고 int 배열 그러면 10의 7승 그래서 O(n)으로 끝내야함
-// 차분배열 이용해서 최대값 구함
 class Solution {
     public int solution(String[] lines) {
         int[] time=new int[(24*3600000)+(60*60000)+60000];
