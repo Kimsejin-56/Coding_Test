@@ -27,12 +27,8 @@ class Solution {
             Point p=new Point(points[start][0], points[start][1]);
             robots.add(p);
             
-            for(int i=1; i<arr.length; i++){
-                int n=arr[i]-1;
-                System.out.println(Arrays.toString(points[n]));
-                p.exits.add(points[n]);
-            }
-            System.out.println();
+            for(int i=1; i<arr.length; i++)
+                p.exits.add(points[arr[i]-1]);
         }
         
         answer+=crush(robots);
@@ -52,6 +48,7 @@ class Solution {
             
             int min=getDis(p.x, p.y, p.exits.get(p.idx)[0], p.exits.get(p.idx)[1]);
             int idx=0;
+            
             for(int i=0; i<4; i++){
                 int nx=p.x+dx[i];
                 int ny=p.y+dy[i];
@@ -74,15 +71,16 @@ class Solution {
             
             if(p.x==p.exits.get(p.idx)[0] && p.y==p.exits.get(p.idx)[1]){
                 p.idx++;
+                
                 if(p.exits.size()<=p.idx) p.dead=true;
             }
         }
     }
     
     public boolean exit(List<Point> robots){
-        for(Point p : robots){
+        for(Point p : robots)
             if(!p.dead) return true;
-        }
+        
         return false;
     }
 
@@ -97,9 +95,9 @@ class Solution {
             map.put(key, map.getOrDefault(key, 0)+1);
         }
         
-        for(String key : map.keySet()){
+        for(String key : map.keySet())
             if(map.get(key)>1) cnt++;
-        }
+        
         
         return cnt;
     }
