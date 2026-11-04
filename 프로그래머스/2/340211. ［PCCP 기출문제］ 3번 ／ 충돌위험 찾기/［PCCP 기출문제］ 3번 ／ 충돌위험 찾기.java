@@ -1,8 +1,12 @@
 import java.util.*;
 
 class Point{
-    int num, index, x,y,gx,gy;
-    Point(int x, int y){
+    int x, y;
+    List<int[]> exits=new ArrayList<>();
+    boolean dead;
+    int idx=0;
+    
+    public Point(int x, int y){
         this.x=x;
         this.y=y;
     }
@@ -11,82 +15,96 @@ class Point{
 class Solution {
     static int[] dx={-1, 1, 0, 0};
     static int[] dy={0, 0, -1, 1};
-
+    
     public int solution(int[][] points, int[][] routes) {
         int answer = 0;
-        List<Point> p=new ArrayList<>();
-        List<Point> s=new ArrayList<>();
-       
-
-        for(int i=0; i<points.length; i++){
-            p.add(new Point(points[i][0], points[i][1]));
-        }
-
-        for(int i=0; i<routes.length; i++){
-            int[] tmp=routes[i];
-           Point cur=new Point(p.get(tmp[0]-1).x, p.get(tmp[0]-1).y);
-           Point g=p.get(tmp[1]-1);
-           cur.gx=g.x;
-           cur.gy=g.y;
-           cur.num=i;
-           cur.index=1;
-           s.add(cur);
-        }
-
-        answer+=crash(s);
-
-        while(!s.isEmpty()) {
-            for (int i = 0; i <s.size(); i++) {
-                Point start = s.get(i);
-
-                for (int j = 0; j < 4; j++) {
-                    int nx = start.x + dx[j];
-                    int ny = start.y + dy[j];
-
-                    if (getDis(nx, ny, start.gx, start.gy) < getDis(start.x, start.y, start.gx, start.gy)) {
-                        start.x = nx;
-                        start.y = ny;
-                        break;
-                    }
-                }
+        List<Point> ps=new ArrayList<>();
+        List<Point> robots=new ArrayList<>();
+        
+        for(int[] arr : routes){
+            int start=arr[0]-1;
+            
+            Point p=new Point(points[start][0], points[start][1]);
+            robots.add(p);
+            
+            for(int i=1; i<arr.length; i++){
+                int n=arr[i]-1;
+                System.out.println(Arrays.toString(points[n]));
+                p.exits.add(points[n]);
             }
-
-            answer+=crash(s);
-
-            for(int j=0; j<s.size(); j++){
-                Point ps=s.get(j);
-                if(ps.x==ps.gx && ps.y==ps.gy) {
-                    ps.index++;
-
-                    if(ps.index==routes[ps.num].length){
-                        s.remove(ps);
-                        j--;
-                    }else {
-                        ps.gx=p.get(routes[ps.num][ps.index]-1).x;
-                        ps.gy=p.get(routes[ps.num][ps.index]-1).y;
-                    }
-                }
-            }
+            System.out.println();
         }
-
+        
+        answer+=crush(robots);
+        
+        while(exit(robots)){
+            move(robots);
+            answer+=crush(robots);
+            dead(robots);
+        }
+        
         return answer;
     }
-
-    public int getDis(int x1, int y1, int x2, int y2){
-        return Math.abs(x2-x1)+Math.abs(y2-y1);
+    
+    public void move(List<Point> robots){
+        for(Point p : robots){
+            if(p.dead) continue;
+            
+            int min=getDis(p.x, p.y, p.exits.get(p.idx)[0], p.exits.get(p.idx)[1]);
+            int idx=0;
+            for(int i=0; i<4; i++){
+                int nx=p.x+dx[i];
+                int ny=p.y+dy[i];
+                int dis=getDis(nx, ny, p.exits.get(p.idx)[0], p.exits.get(p.idx)[1]);
+                
+                if(min>dis){
+                    min=dis;
+                    idx=i;
+                }
+            }
+            
+            p.x+=dx[idx];
+            p.y+=dy[idx];
+        }
+    }
+    
+    public void dead(List<Point> robots){
+        for(Point p : robots){
+            if(p.dead) continue;
+            
+            if(p.x==p.exits.get(p.idx)[0] && p.y==p.exits.get(p.idx)[1]){
+                p.idx++;
+                if(p.exits.size()<=p.idx) p.dead=true;
+            }
+        }
+    }
+    
+    public boolean exit(List<Point> robots){
+        for(Point p : robots){
+            if(!p.dead) return true;
+        }
+        return false;
     }
 
-    public int crash(List<Point> s){
+    public int crush(List<Point> robots){
         Map<String, Integer> map=new HashMap<>();
-        for(Point p : s){
+        int cnt=0;
+        
+        for(Point p : robots){
+            if(p.dead) continue;
+            
             String key=p.x+":"+p.y;
             map.put(key, map.getOrDefault(key, 0)+1);
         }
-
-        int cnt=0;
-        for(String k : map.keySet()){
-            if(map.get(k)>=2) cnt++;
+        
+        for(String key : map.keySet()){
+            if(map.get(key)>1) cnt++;
         }
+        
         return cnt;
+    }
+    
+    public int getDis(int x1, int y1, int x2, int y2){
+        return Math.abs(x1-x2)+Math.abs(y1-y2);
     }
 }
