@@ -21,12 +21,8 @@ class Solution {
             }
             
             if(total<=limit){
-                if(answer>mid){
-                    answer=mid;
-                    rt=mid-1;
-                }else{
-                    lt=mid+1;
-                }
+                answer=mid;
+                rt=mid-1;
             }else {
                 lt=mid+1;
             }
