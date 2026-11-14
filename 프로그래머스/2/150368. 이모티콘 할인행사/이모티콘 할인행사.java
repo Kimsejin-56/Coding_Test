@@ -2,9 +2,11 @@ import java.util.*;
 
 class Solution {
     static int[] discount={10, 20, 30, 40};
-    static int[] answer = new int[2];
+    static int[] answer;
     
     public int[] solution(int[][] users, int[] emoticons) {
+        answer=new int[2];
+        
         dfs(0, emoticons, users, new int[emoticons.length]);
         
         return answer;
