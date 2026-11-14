@@ -1,63 +1,49 @@
 import java.util.*;
 
-class Result implements Comparable<Result>{
-    int plus, price;
-    public Result(int plus, int price){
-        this.plus=plus;
-        this.price=price;
-    }
-    
-    public int compareTo(Result r){
-        if(r.plus==this.plus) return r.price - this.price;
-        return r.plus - this.plus;
-    }
-}
-
 class Solution {
-    static int[] apply;
-    static List<Result> list;
+    static int[] discount={10, 20, 30, 40};
+    static int[] answer = new int[2];
     
     public int[] solution(int[][] users, int[] emoticons) {
-        int[] answer = new int[2];
-        apply=new int[emoticons.length];
-        list=new ArrayList<>();
-        dfs(0, emoticons, users);
+        dfs(0, emoticons, users, new int[emoticons.length]);
         
-        Collections.sort(list);
-        answer[0]=list.get(0).plus;
-        answer[1]=list.get(0).price;
         return answer;
     }
     
-    public void dfs(int depth, int[] emoticons, int[][]users){
+    public void dfs(int depth, int[] emoticons, int[][] users, int[] arr){
         if(depth==emoticons.length){
-            buy(users, emoticons);
-        } else{
-            for(int i=1; i<=4; i++){
-                apply[depth]=i*10;
-                dfs(depth+1, emoticons, users);
+            int plus=0;
+            int total=0;
+            
+            for(int i=0; i<users.length; i++){
+                int percent=users[i][0];
+                int price=users[i][1];
+                int buy=0;
+                
+                for(int j=0; j<arr.length; j++){
+                    if(percent<=arr[j]){
+                        buy+=emoticons[j]-((emoticons[j]*arr[j])/100);
+                    }
+                }
+                
+                if(price<=buy) plus++;
+                else total+=buy;
+            }
+            
+            if(isBetter(plus, total)){
+                answer[0]=plus;
+                answer[1]=total;
+            }
+        }else{
+            for(int i=0; i<discount.length; i++){
+                arr[depth]=discount[i];
+                dfs(depth+1, emoticons, users, arr);
             }
         }
     }
     
-    public void buy(int[][] users, int[] emoticons){
-        int plus=0;
-        int total=0;
-        for(int i=0; i<users.length; i++){
-            int temp=0;
-            int discount=users[i][0];
-            int price=users[i][1];
-            
-            for(int j=0; j<emoticons.length; j++){
-                if(apply[j]<discount) continue;
-            
-                temp+=emoticons[j]-(emoticons[j]/100 * apply[j]);
-            }
-            
-            if(temp>=price) plus++;
-            else total+=temp;
-        }
-        
-        list.add(new Result(plus, total));
-    } 
+    public boolean isBetter(int plus, int total){
+        if(answer[0]!=plus) return answer[0]<plus;
+        return answer[1]<total;
+    }
 }
