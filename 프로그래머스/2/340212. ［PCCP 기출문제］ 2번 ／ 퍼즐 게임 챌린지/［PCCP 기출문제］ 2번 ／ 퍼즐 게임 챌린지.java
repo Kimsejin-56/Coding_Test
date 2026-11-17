@@ -4,12 +4,12 @@ class Solution {
     public int solution(int[] diffs, int[] times, long limit) {
         int answer = Integer.MAX_VALUE;
         int lt=1;
-        int rt=100000;
-        
-        while(lt<=rt){
+        int rt=100001;
+
+        while(lt<rt){
             int mid=(lt+rt)/2;
             long total=0;
-            
+
             for(int i=0; i<diffs.length; i++){
                 int d=diffs[i];
                 if(d<=mid){
@@ -19,15 +19,15 @@ class Solution {
                     total+=(times[i]+times[i-1])*n+times[i];
                 }
             }
-            
+
             if(total<=limit){
                 answer=mid;
-                rt=mid-1;
+                rt=mid;
             }else {
                 lt=mid+1;
             }
         }
-        
+
         return answer;
     }
 }
