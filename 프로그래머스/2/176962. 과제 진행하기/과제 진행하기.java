@@ -1,5 +1,4 @@
 import java.util.*;
-//8:45
 
 class Task{
     String name;
@@ -18,7 +17,7 @@ class Solution {
         int n=plans.length;
         String[] answer = new String[n];
         List<Task> order=new ArrayList<>();
-        Stack<Task> s=new Stack<>();
+        Deque<Task> s=new ArrayDeque<>();
         int idx=0;
         
         for(int i=0; i<n; i++){
@@ -41,9 +40,7 @@ class Solution {
                 int rest=diff-cur.time;
                 answer[idx++]=cur.name;
                 
-                while(rest>0){
-                    if(s.isEmpty()) break;
-                    
+                while(rest>0 && !s.isEmpty()){
                     Task prev=s.pop();
                     if(prev.work>rest){
                         prev.work-=rest;
