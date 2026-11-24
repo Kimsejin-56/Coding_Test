@@ -1,6 +1,5 @@
 import java.util.*;
 
-//9:09
 class Point implements Comparable<Point>{
     int num, play;
     
@@ -13,10 +12,6 @@ class Point implements Comparable<Point>{
         if(this.play==p.play) return this.num-p.num;
         return p.play-this.play;
     }
-    
-    public String toString(){
-        return num+" "+play;
-    }
 }
 
 class Music{
@@ -26,10 +21,6 @@ class Music{
     public Music(String genre, int sum){
         this.genre=genre;
         this.sum=sum;
-    }
-    
-    public String toString(){
-        return genre+" "+sum;
     }
 }
 
