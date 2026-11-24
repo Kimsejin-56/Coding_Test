@@ -52,15 +52,10 @@ class Solution {
         
         for(Music m : order){
             List<Point> list=music.get(m.genre);
-            
             Collections.sort(list);
             
-            if(list.size()>=2){
-                for(int i=0; i<2; i++){
-                    answer.add(list.get(i).num);
-                }
-            }else {
-                answer.add(list.get(0).num);
+            for(int i=0; i<Math.min(2, list.size()); i++){
+                answer.add(list.get(i).num);
             }
         }
         
