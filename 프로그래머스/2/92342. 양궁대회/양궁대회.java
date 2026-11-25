@@ -1,63 +1,64 @@
 import java.util.*;
 
 class Solution {
-    static int[] arr;
     static List<int[]> list;
-    static int me, you, answer;
+    static int max;
+    
     public int[] solution(int n, int[] info) {
-        answer=0;
         list=new ArrayList<>();
-        arr=new int[11];
-        dfs(0, 0, n, info);
+        max=Integer.MIN_VALUE;
         
-        if(list.size()==0){
-            int[] tmp=new int[1];
-            tmp[0]=-1;
-            return tmp;
-        } else if(list.size() > 1){
-            for(int i=10; i>=0; i--){
-                int max=0;
-                for(int j=0; j<list.size(); j++){
-                    max=Math.max(max, list.get(j)[i]);
-                }
-                
-                for(int j=0; j<list.size(); j++){
-                    if(max!=list.get(j)[i]) {
-                        list.remove(j);
-                        j--;
-                    }
-                }
-                if(list.size()==1) break;
+        dfs(0, 0, new int[11], n, info);
+        
+        if(max<=0) return new int[] {-1};
+        if(list.size()==1) return list.get(0);
+        
+        int [] max=list.get(0);
+        for(int i=1; i<list.size(); i++){
+            if(isBetter(max, list.get(i))){
+                max=list.get(i);
             }
         }
         
-        return list.get(0);
+        return max;
+    }
+
+    public void dfs(int depth, int start, int[] arr, int n, int[] info){
+        if(depth==n){
+            int cur=calc(arr, info);
+            if(max<cur){
+                max=cur;
+                list.clear();
+                list.add(arr.clone());
+            }else if(max==cur) list.add(arr.clone());
+        }else {
+            for(int i=start; i<11; i++){
+                arr[i]++;
+                dfs(depth+1, i, arr, n, info);
+                arr[i]--;
+            }
+        }
     }
     
-    public void dfs(int depth, int start, int n, int[] info){
-        if(depth==n) {
-            me=0;
-            you=0;
-            for(int i=0; i<=10; i++){
-                if(info[i]==0 && arr[i]==0) continue;
-                if(info[i] < arr[i]) me+=10-i;
-                else you+=10-i;
-            }
-            int diff=me-you;
+    public int calc(int[] arr, int[] info){
+        int my=0;
+        int you=0;
+        
+        for(int i=0; i<11; i++){
+            if(arr[i]==0 && info[i]==0) continue;
             
-            if(diff<=0) return;
-            if(answer < diff){
-                answer=diff;
-                list.clear();
-                list.add(Arrays.copyOf(arr, arr.length));
-            } else if(answer==diff) list.add(Arrays.copyOf(arr, arr.length));
-            
-            return;
-        } 
-        for(int i=start; i<=10; i++){
-            arr[i]++;
-            dfs(depth+1, i, n, info);
-            arr[i]--;
+            if(arr[i]>info[i]) my+=10-i;
+            else you+=10-i;
         }
+        
+        return my-you;
+    }
+    
+    public boolean isBetter(int[] max, int[] cur){
+        for(int i=10; i>=0; i--){
+            if(max[i]!=cur[i]) return max[i]<cur[i];
+        }
+        
+        return false;
     }
 }
