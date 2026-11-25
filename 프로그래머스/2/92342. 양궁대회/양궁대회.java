@@ -1,36 +1,28 @@
 import java.util.*;
 
 class Solution {
-    static List<int[]> list;
+    static int[] answer;
     static int max;
     
     public int[] solution(int n, int[] info) {
-        list=new ArrayList<>();
-        max=Integer.MIN_VALUE;
+        answer=new int[] {-1};
+        max=0;
         
         dfs(0, 0, new int[11], n, info);
         
-        if(max<=0) return new int[] {-1};
-        if(list.size()==1) return list.get(0);
-        
-        int [] max=list.get(0);
-        for(int i=1; i<list.size(); i++){
-            if(isBetter(max, list.get(i))){
-                max=list.get(i);
-            }
-        }
-        
-        return max;
+        return answer;
     }
 
     public void dfs(int depth, int start, int[] arr, int n, int[] info){
         if(depth==n){
             int cur=calc(arr, info);
-            if(max<cur){
+            
+            if(cur<=0) return;
+            
+            if(max<cur || (max==cur && isBetter(answer, arr))){
                 max=cur;
-                list.clear();
-                list.add(arr.clone());
-            }else if(max==cur) list.add(arr.clone());
+                answer=arr.clone();
+            }
         }else {
             for(int i=start; i<11; i++){
                 arr[i]++;
