@@ -1,70 +1,78 @@
 import java.util.*;
 
+//8:41
 class Solution {
-    static char[] op={'*', '+', '-'};
-    static boolean[] visited;
+    static String[] op={"*", "-", "+"};
+    static List<Long> num;
+    static List<String> ops;
     static long answer;
     
     public long solution(String expression) {
         answer = 0;
-        visited=new boolean[3];
-        dfs(0, new char[3], expression);
+        num=new ArrayList<>();
+        ops=new ArrayList<>();
+        int idx=0;
+        String str="";
+        
+        while(idx<expression.length()){
+            if(Character.isDigit(expression.charAt(idx))){
+                str+=expression.charAt(idx);
+            }else{
+                num.add(Long.parseLong(str));
+                ops.add(String.valueOf(expression.charAt(idx)));
+                str="";
+            }
+            idx++;
+        }
+        
+        num.add(Long.parseLong(str));
+        
+        dfs(0, new String[3], new boolean[3], expression);
+        
         return answer;
     }
     
-    public void dfs(int depth, char[] arr, String ex){
+    public void dfs(int depth, String[] arr, boolean[] visited, String ex){
         if(depth==3){
-             answer=Math.max(answer, Math.abs(calc(arr, ex)));
+            answer=Math.max(answer, calc(arr, ex));
+            return;
         }else{
             for(int i=0; i<3; i++){
                 if(visited[i]) continue;
-                arr[depth]=op[i];
                 visited[i]=true;
-                dfs(depth+1, arr, ex);
+                arr[depth]=op[i];
+                dfs(depth+1, arr, visited, ex);
                 visited[i]=false;
             }
         }
     }
     
-    public long calc(char[] arr, String ex){
-        String num="";
-        List<Long> nums=new ArrayList<>();
-        List<Character> ops=new ArrayList<>();
-        
-        for(int i=0; i<ex.length(); i++){
-            if(Character.isDigit(ex.charAt(i))){
-                num+=String.valueOf(ex.charAt(i)); 
-            }else {
-                nums.add(Long.parseLong(num));
-                num="";
-                ops.add(ex.charAt(i));
-            }
-        }
-        nums.add(Long.parseLong(num));
+    public long calc(String[] arr, String ex){
+        List<Long> nums=new ArrayList<>(num);
+        List<String> operators=new ArrayList<>(ops);
         
         for(int i=0; i<3; i++){
-            char oper=arr[i];
-            for(int j=0; j<ops.size(); j++){
-                if(oper==ops.get(j)){
-                    long n=0;
-                    long n1=nums.get(j);
-                    long n2=nums.get(j+1);
+            int idx=0;
+            String op=arr[i];
+            
+            while(idx<operators.size()){
+                if(op.equals(operators.get(idx))){
+                    long n=simpleCalc(nums.get(idx), nums.get(idx+1), op);
                     
-                    if(oper=='*') n=n1*n2;
-                    else if(oper=='+') n=n1+n2;
-                    else if(oper=='-') n=n1-n2;
-                    
-                    nums.remove(j+1);
-                    nums.remove(j);
-                    
-                    nums.add(j, n);
-                    ops.remove(j);
-                    j--;
-                }
+                    operators.remove(idx);
+                    nums.remove(idx+1);
+                    nums.remove(idx);
+                    nums.add(idx, n);
+                }else idx++;
             }
         }
         
-        return nums.get(0);
+        return Math.abs(nums.get(0));
     }
     
+    public long simpleCalc(long n1, long n2, String op){
+        if(op.equals("*")) return n1*n2;
+        if(op.equals("-")) return n1-n2;
+        return n1+n2;
+    }
 }
