@@ -1,48 +1,58 @@
 import java.util.*;
 
+//5:28
 class Solution {
     public int solution(int[] queue1, int[] queue2) {
-        int answer = 0;
-        Queue<Integer> q1=new ArrayDeque<>();
-        Queue<Integer> q2=new ArrayDeque<>();
-        long sum1=0;
-        long sum2=0;
-        long goal=0;
-
-
-        for(int i : queue1){
-            q1.add(i);
-            sum1+=i;
-        }
-
-        for(int i : queue2){
-            q2.add(i);
-            sum2+=i;
-        }
-
-        if((sum1+sum2)%2==1) return -1;
-        goal=(sum1+sum2)/2;
-
-        for(int i=0; i<300000; i++){
-            if(q1.isEmpty() || q2.isEmpty()) return -1;
-
-            if(sum1>goal){
-               int n=q1.poll();
-               q2.add(n);
-               sum1-=n;
-               sum2+=n;
-            }else if(sum1<goal){
-                int n=q2.poll();
-                q1.add(n);
-                sum1+=n;
-                sum2-=n;
+        int answer = -1;
+        Queue<Integer> q1=makeQueue(queue1);
+        Queue<Integer> q2=makeQueue(queue2);
+        long sum1=getSum(queue1);
+        long sum2=getSum(queue2);
+        long mid=(sum1+sum2)/2;
+        int cnt=0;
+        int val=0;
+        
+        while(cnt<3*queue1.length){
+            if(sum1==0 || sum2==0) break;
+            
+            if(sum1==mid) {
+                answer=cnt;
+                break;
+            }else if(sum1>mid){
+                val=q1.poll();
+                q2.offer(val);
+                sum1-=val;
+                sum2+=val;
+                cnt++;
             }else{
-                return answer;
+                val=q2.poll();
+                q1.offer(val);
+                sum1+=val;
+                sum2-=val;
+                cnt++;
             }
-
-            answer++;
         }
         
-        return -1;
+        return answer;
+    }
+    
+    public Queue<Integer> makeQueue(int[] queue){
+        Queue<Integer> q=new ArrayDeque<>();
+        
+        for(int i : queue){
+            q.offer(i);
+        }
+        
+        return q;
+    }
+    
+    public long getSum(int[] queue){
+        long sum=0;
+        
+        for(int i : queue){
+            sum+=i;
+        }
+        
+        return sum;
     }
 }
