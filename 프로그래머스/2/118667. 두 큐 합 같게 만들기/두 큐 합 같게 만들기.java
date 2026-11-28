@@ -1,6 +1,5 @@
 import java.util.*;
 
-//5:28
 class Solution {
     public int solution(int[] queue1, int[] queue2) {
         int answer = -1;
@@ -12,7 +11,7 @@ class Solution {
         int cnt=0;
         int val=0;
         
-        while(cnt<3*queue1.length){
+        while(cnt<4*queue1.length){
             if(sum1==0 || sum2==0) break;
             
             if(sum1==mid) {
