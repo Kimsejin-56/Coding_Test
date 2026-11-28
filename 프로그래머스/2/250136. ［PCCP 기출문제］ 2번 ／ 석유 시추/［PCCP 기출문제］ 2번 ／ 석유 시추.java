@@ -13,13 +13,13 @@ class Solution {
     static int answer, n, m;
     static int[] dx={-1, 0, 1, 0};
     static int[] dy={0, -1, 0, 1};
-    static Map<Integer, Integer> map;
+    static int[] oil;
     
     public int solution(int[][] land) {
         answer = 0;
         n=land.length;
         m=land[0].length;
-        map=new HashMap<>();
+        oil=new int[m];
         boolean[][] visited=new boolean[n][m];
         
         for(int i=0; i<m; i++){
@@ -31,8 +31,8 @@ class Solution {
             }
         }
         
-        for(int key : map.keySet()){
-            answer=Math.max(answer, map.get(key));
+        for(int i=0; i<m; i++){
+            answer=Math.max(answer, oil[i]);
         }
         
         return answer;
@@ -63,7 +63,7 @@ class Solution {
         }
         
         for(int i : set){
-            map.put(i, map.getOrDefault(i, 0)+sum);
+            oil[i]+=sum;
         }
     }
 }
